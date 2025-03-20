@@ -35,7 +35,7 @@ pipeline {
         stage('Copy docker-compose file to docker host'){
             steps{
                 echo "Coping Deployment file to remote host"
-                sh "scp -i /var/lib/jenkins/.ssh/id_rsa docker-compose.yml bobosunne@10.10.1.42:/home/bobosunne/deployment/flaskapp"
+                sh "scp -i /var/lib/jenkins/.ssh/id_rsa docker-compose.yml db_init.sql bobosunne@10.10.1.42:/home/bobosunne/deployment/flaskapp"
             }
         }
         stage('Deploy App on The Remote Host') {
