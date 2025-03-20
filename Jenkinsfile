@@ -24,7 +24,7 @@ pipeline {
                     passwordVariable: 'docker_pass', 
                     usernameVariable: 'docker_user')]) {
                     
-                    sh "docker login -u ${docker_user -p ${docker_pass}}"
+                    sh "docker login -u ${docker_user} -p ${docker_pass}"
                 }
                 sh    "docker tag class-demo-img ${docker_user}/class-demo-img:v1"
                 sh    "docker push ${docker_user}/class-demo-img:v1"
