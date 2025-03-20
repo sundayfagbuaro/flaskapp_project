@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}" />
+    
+    
+
+</head>
+<body class="body">
+    <div class="div">
+    <h1>Welcome To Kloud Vista Registration Portal</h1>
+    </div><br>
+
+    
+    <div><h1>Don't Have An Account, <a href="{{ url_for('register_func') }}">Register</a></h1></div>
+    <div><h1>Already Have An Account, <a href="{{ url_for('login_func') }}">Login</a></h1></div><br />
+    
+    
+    
+
+</body>
+</html>

@@ -1,0 +1,44 @@
+body{
+    background-color:powderblue; 
+    text-align: center; 
+    align-items: center;
+}
+
+.div{
+    text-align: center; 
+    background-origin: padding-box; 
+    background: fixed;        
+    background-position: 50; 
+    background-color: aliceblue;
+    border-radius: 50; 
+    border-style: solid; 
+    border-width: thick; 
+    align-items: center;
+}
+        
+.div-form{
+    text-align: center; 
+    background-origin: padding-box; 
+    background: fixed; 
+    background-color: white;
+    border-radius: 100; 
+    border-style: solid; 
+    border-width: dotted; 
+    align-items: center; 
+    width: 500px;   
+    margin-left: 500px; 
+    border-color: blue;
+}
+.table{
+    text-align: center; 
+    background-origin: padding-box; 
+    background: fixed; 
+    background-color: white;
+    border-radius: 100; 
+    border-style: solid; 
+    border-width: dotted; 
+    align-items: center; 
+    width: 500px;   
+    margin-left: 500px; 
+    border-color: blue;
+}
