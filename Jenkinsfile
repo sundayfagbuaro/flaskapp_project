@@ -31,5 +31,12 @@ pipeline {
                 
             }
         }
+
+        stage('Copy Deployment file (docker-compose.yml) To Docker Host') {
+            steps{
+                echo "Copying deployment file To The Remote Docker Host"
+                sh "scp -i /var/lib/jenkins/.ssh/id_rsa docker-compose.yml bobosunne@10.10.1.42:/home/bobosunne/flaskapp/"
+            }
+        }
     }
 }
