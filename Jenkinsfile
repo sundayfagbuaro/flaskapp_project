@@ -38,5 +38,19 @@ pipeline {
                 sh "scp -i /var/lib/jenkins/.ssh/id_rsa docker-compose.yml bobosunne@10.10.1.42:/home/bobosunne/deployment/flaskapp"
             }
         }
+        stage('Deploy App on The Remote Host') {
+            steps{
+                echo "Running Containers on the remote host"
+                sshagent(['bobosunne-jenkins-dl']) {
+                    """
+                        ssh -tt -o StrictHostKeyChecking=no bobosunne@10.10.1.42 << EOF
+                        docker compose up
+                        docker compose ps
+                        exit
+                        EOF
+                    """
+                }
+            }
+        }
     }
 }
