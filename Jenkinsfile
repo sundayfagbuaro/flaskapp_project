@@ -27,7 +27,7 @@ pipeline {
                 }
                 sh """ 
                     docker tag class-demo-img ${docker_user}/class-demo-img:v1
-                    docker push ${docker_user}/class-demo-img:v1
+                    docker push sundayfagbuaro/class-demo-img:v1
                 """
             }
         }
