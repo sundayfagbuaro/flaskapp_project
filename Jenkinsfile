@@ -13,8 +13,22 @@ pipeline {
         stage('Build Docker Image') {
             steps{
                 echo 'Building Docker Image'
-                sh 'docker build -t class-demo-img .'
-                
+                sh 'docker build -t class-demo-img .'             
+            }
+        }
+        stage('Push Inage to Docker Hub') {
+            steps{
+                echo "Pushing Image to Docker Hub"
+                withCredentials([
+                    usernamePassword(credentialsId: 'docker-hub-cred', 
+                    passwordVariable: 'docker_pass', 
+                    usernameVariable: 'docker_user')]) {
+                    sh 'docker login -u ${docker_user -p ${docker_pass}}'
+                }
+                sh """ 
+                    docker tag class-demo-img ${docker_user}/class-demo-img:v1
+                    docker push ${docker_user}/class-demo-img:v1
+                """
             }
         }
     }
