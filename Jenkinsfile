@@ -5,7 +5,7 @@ pipeline {
         stage('Clone Git Repo') {
             steps {
                 echo 'Checking Out SCM'
-                git branch: 'flask app_compose', 
+                git branch: 'flaskapp_compose', 
                 credentialsId: 'git_cred', 
                 url: 'https://github.com/sundayfagbuaro/flaskapp_project.git'
             }
