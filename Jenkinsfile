@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    vars:
+        DOCKER_USER = "${docker_user}"
+
+
     stages {
         stage('Clone Git Repo') {
             steps {
@@ -26,8 +30,8 @@ pipeline {
                     
                     sh "docker login -u ${docker_user} -p ${docker_pass}"
                 }
-                sh    "docker tag class-demo-img ${docker_user}/class-demo-img:v1"
-                sh    "docker push ${docker_user}/class-demo-img:v1"
+                sh    "docker tag class-demo-img ${DOKCER_USER}/class-demo-img:v1"
+                sh    "docker push ${DOCKER_USER}/class-demo-img:v1"
                 
             }
         }
