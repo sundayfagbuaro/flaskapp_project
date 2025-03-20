@@ -40,15 +40,17 @@ pipeline {
         }
         stage('Deploy App on The Remote Host') {
             steps{
-                echo "Running Containers on the remote host"
-                sshagent(['bobosunne-jenkins-dl']) {
-                    """
-                        ssh -tt -o StrictHostKeyChecking=no bobosunne@10.10.1.42 << EOF
-                        docker compose up
-                        docker compose ps
-                        exit
-                        EOF
-                    """
+                script{
+                    echo "Running Containers on the remote host"
+                    sshagent(['bobosunne-jenkins-dl']) {
+                       sh """
+                            ssh -tt -o StrictHostKeyChecking=no bobosunne@10.10.1.42 << EOF
+                            docker compose up
+                            docker compose ps
+                            exit
+                            EOF
+                        """              
+                    }
                 }
             }
         }
