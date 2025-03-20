@@ -36,7 +36,7 @@ pipeline {
             steps{
                 echo "Coping Deployment file to remote host"
                 sh "scp -i /var/lib/jenkins/.ssh/id_rsa docker-compose.yml bobosunne@10.10.1.42:/home/bobosunne/deployment/flaskapp/"
-                sh "scp -i /var/lib/jenkins/.ssh/id_rsa db_init.sql bobosunne@10.10.1.42:/home/bobosunne/deployment/flaskapp/"
+                sh "scp -i /var/lib/jenkins/.ssh/id_rsa init.sql bobosunne@10.10.1.42:/home/bobosunne/deployment/flaskapp/"
                     
             }
         }
