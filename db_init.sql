@@ -2,7 +2,7 @@
 CREATE DATABASE IF NOT EXISTS users_db;
 
 
-use users_db
+use users_db;
 
 CREATE TABLE new_users (
     id INT AUTO_INCREMENT,
