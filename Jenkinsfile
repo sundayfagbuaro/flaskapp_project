@@ -10,5 +10,12 @@ pipeline {
                 url: 'https://github.com/sundayfagbuaro/flaskapp_project.git'
             }
         }
+        stage('Build Docker Image') {
+            steps{
+                echo 'Building Docker Image'
+                sh 'docker build -t class-demo-img .'
+                
+            }
+        }
     }
 }
