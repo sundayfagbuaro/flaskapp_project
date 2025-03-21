@@ -32,12 +32,14 @@ pipeline {
             }
         }
         stage('SSH To K8s Cluster') {
+            steps{
                 def remote = [:]
                 remote.name = 'k8-master-test'
                 remote.host = '10.10.1.34'
                 remote.user = 'bobosunne'
                 remote.password = 'P@ssWord1'
                 remote.AllowAnyHost = true
+            }
             
         }
             stage('Put Deployment files to k8 cluster') {
