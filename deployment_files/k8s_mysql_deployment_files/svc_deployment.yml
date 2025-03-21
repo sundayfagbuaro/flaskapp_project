@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-db
+spec:
+  selector:
+    matchLabels:
+      app: flask-db
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: flask-db
+    spec:
+      containers:
+      - image: ubuntu/mysql
+        name: flask-db
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: password
+        ports:
+        - containerPort: 3306
+          name: flask-db
+        volumeMounts:
+        - name: db-pv-storage
+          mountPath: /var/lib/mysql
+        - name: initdb
+          mountPath: /docker-entrypoint-initdb.d
+      volumes:
+      - name: db-pv-storage
+        persistentVolumeClaim:
+          claimName: db-pvc
+      - name: initdb
+        configMap:
+          name: initdb-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: flask-db
+spec:
+  ports:
+  - port: 3306
+  selector:
+    app: flask-db
