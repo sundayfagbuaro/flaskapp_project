@@ -4,8 +4,8 @@ from flask import Flask, render_template, request
 import pymysql
 
 
-db = pymysql.connect(host='localhost', user='root', password='password', database='users_db') # connect to localhost
-#db = pymysql.connect(host='flask_db', user='root', password='password', database='users_db', port=3306) # Connect to conta.
+#db = pymysql.connect(host='localhost', user='root', password='password', database='users_db') # connect to localhost
+db = pymysql.connect(host='flask_db', user='root', password='password', database='users_db', port=3306) # Connect to conta.
 
 app = Flask(__name__, template_folder='templates', static_folder='static')
 
