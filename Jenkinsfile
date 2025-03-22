@@ -42,6 +42,8 @@ pipeline {
 
                     ssh -tt -o StrictHostKeyChecking=no bobosunne@10.10.1.42 << EOF
                     cd class_demo_deploy
+                    docker network create flasknet
+                    docker volume create sqldb_data
                     docker compose up -d
                     exit
                     EOF

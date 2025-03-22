@@ -36,11 +36,10 @@ services:
 
 networks:
   flasknet:
-#    external: true
-#    name: flasknet
+    external: true
+    name: flasknet
 
 volumes:
   sqldb_data:
-#  new_flask_db_data:
-#    external: false
-#    name: new_flask_db_data
+    external: true
+    name: sqldb_data
