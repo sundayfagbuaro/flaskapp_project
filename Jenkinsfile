@@ -35,8 +35,8 @@ pipeline {
         stage('Copy docker-compose file to docker host'){
             steps{
                 echo "Coping Deployment file to remote host"
-                sh "scp -i /var/lib/jenkins/.ssh/id_rsa docker-compose.yml bobosunne@10.10.1.42:/home/bobosunne/deployment/flaskapp/"
-                sh "scp -i /var/lib/jenkins/.ssh/id_rsa init.sql bobosunne@10.10.1.42:/home/bobosunne/deployment/flaskapp/"
+                sh "scp -i /var/lib/jenkins/.ssh/id_rsa docker-compose.yml bobosunne@10.10.1.42:/home/bobosunne/class_demo_deploy/"
+                sh "scp -i /var/lib/jenkins/.ssh/id_rsa init.sql bobosunne@10.10.1.42:/home/bobosunne/class_demo_deploy/"
                     
             }
         }
@@ -44,10 +44,10 @@ pipeline {
             steps{
                 script{
                     echo "Running Containers on the remote host"
-                    sshagent(['bobosunne-jenkins-dl']) {
+                    sshagent(['jenkins-bobosunne']) {
                        sh """
                             ssh -tt -o StrictHostKeyChecking=no bobosunne@10.10.1.42 << EOF
-                            cd deployment/flaskapp
+                            cd class_demo_deploy
                             docker compose up -d
                             docker compose ps
                             exit
