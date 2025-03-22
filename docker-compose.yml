@@ -1,0 +1,46 @@
+services:
+  flask_app:
+    container_name: flask_app
+    image: class-demo-img:v1
+#    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - "MYSQL_HOST:flask_db"
+      - "MYSQL_USER:root"
+      - "MYSQL_PASSWORD:password"
+      - "MYSQL_DB:users_db"
+    networks:
+      - flasknet
+    restart: always
+
+    depends_on:
+      - flask_db
+  flask_db:
+    container_name: flask_db
+    image: ubuntu/mysql
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=password
+      - MYSQL_DATABASE:users_db
+      - MYSQL_ROOT_PASSWORD=password
+    command: --init-file /data/application/init.sql
+    volumes:
+      - sqldb_data:/var/lib/mysql
+      - ./db_init.sql:/docker-entrypoint-initdb.d/db_init.sql
+    networks:
+      - flasknet
+    restart: always
+
+networks:
+  flasknet:
+#    external: true
+#    name: flasknet
+
+volumes:
+  sqldb_data:
+#  new_flask_db_data:
+#    external: false
+#    name: new_flask_db_data
