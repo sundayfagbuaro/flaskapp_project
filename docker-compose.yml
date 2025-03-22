@@ -28,7 +28,7 @@ services:
       - MYSQL_DATABASE:users_db
       - MYSQL_ROOT_PASSWORD=password
     volumes:
-      - sqldb_data:/var/lib/mysql
+      - new_sqldb_data:/var/lib/mysql
       - ./db_init.sql:/docker-entrypoint-initdb.d/db_init.sql
     networks:
       - new_flasknet
