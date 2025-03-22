@@ -11,8 +11,8 @@ services:
       - "MYSQL_USER:root"
       - "MYSQL_PASSWORD:password"
       - "MYSQL_DB:users_db"
-    new_networks:
-      - flasknet
+    networks:
+      - new_flasknet
     restart: always
 
     depends_on:
@@ -30,8 +30,8 @@ services:
     volumes:
       - sqldb_data:/var/lib/mysql
       - ./db_init.sql:/docker-entrypoint-initdb.d/db_init.sql
-    new_networks:
-      - flasknet
+    networks:
+      - new_flasknet
     restart: always
 
 networks:
