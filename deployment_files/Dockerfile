@@ -1,5 +1,4 @@
 FROM python:3.9-slim-buster
-#FROM sundayfagbuaro/ubuntu-python-java-git:latest
 WORKDIR /app
 COPY requirement.txt /app
 RUN pip install -r requirement.txt
