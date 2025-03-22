@@ -1,7 +1,7 @@
 services:
   flask_app:
     container_name: flask_app
-    image: sundayfagbuaro/class-flaskapp-demo
+    image: sundayfagbuaro/class-flaskapp-demo:v1
 #    build: .
     ports:
       - "5000:5000"
