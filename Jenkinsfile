@@ -5,8 +5,8 @@ pipeline {
         stage('Clone Git Repository') {
             steps{
                 git branch: 'class_demo', 
-            credentialsId: 'git_cred', 
-            url: 'https://github.com/sundayfagbuaro/flaskapp_project.git'
+                credentialsId: 'git_cred', 
+                url: 'https://github.com/sundayfagbuaro/flaskapp_project.git'
             }
             
         }
@@ -14,6 +14,18 @@ pipeline {
             steps{
                 sh "docker build -t flaskapp-demo ."
                 sh "docker image ls"
+            }
+        }
+        stage('Push Image to Docker Hub') {
+            steps{
+                withCredentials([
+                    usernamePassword(credentialsId: 'docker-hub-cred', 
+                    passwordVariable: 'docker_password', 
+                    usernameVariable: 'docker_username')]) {
+                sh "docker login -u ${docker_username} -p ${docker_password}"
+            }
+                sh "docker tag flaskapp-demo sundayfagbauro/flaskapp-demo:v1.0"
+                sh "docker push sundayfagbauro/flaskapp-demo:v1.0"
             }
         }
 
