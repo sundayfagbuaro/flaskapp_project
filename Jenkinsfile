@@ -12,7 +12,7 @@ pipeline {
         }
         stage('Build Docker Image') {
             steps{
-                sh "docker build -t flaskapp-demo ."
+                sh "docker build -t class-flaskapp-demo ."
                 sh "docker image ls"
             }
         }
@@ -24,8 +24,8 @@ pipeline {
                     usernameVariable: 'docker_username')]) {
                 sh "docker login -u ${docker_username} -p ${docker_password}"
             }
-                sh "docker tag flaskapp-demo sundayfagbauro/flaskapp-demo:v1.0"
-                sh "docker push sundayfagbauro/flaskapp-demo:v1.0"
+                sh "docker tag class-flaskapp-demo sundayfagbauro/class-flaskapp-demo:v1.0"
+                sh "docker push sundayfagbauro/class-flaskapp-demo:v1.0"
             }
         }
 
