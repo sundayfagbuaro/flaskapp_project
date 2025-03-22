@@ -40,6 +40,7 @@ pipeline {
                 sshagent(['jenkins-bobosunne']) {
                     sh """
                         ssh -tt -o StrictHostKeyChecking=no bobosunne@10.10.142 << EOF
+                        cd class_demo_deploy
                         docker compose up -d
                         exit
                         EOF
