@@ -13,8 +13,10 @@ pipeline {
         stage('Build Docker Image') {
             steps{
                 sh "docker build -t flaskapp-demo ."
+                sh "docker image ls"
             }
         }
+
     }
 }
 
