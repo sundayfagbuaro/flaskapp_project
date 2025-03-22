@@ -34,6 +34,19 @@ pipeline {
                 sh "scp -i /var/lib/jenkins/id_rsa db_init.sql bobosunne@10.10.1.42:/home/bobosunne/class_demo_deploy/"
             }
         }
+        stage('Deploy Flaskapp to Docker Host') {
+            steps{
+                echo "Deloying Application to Docker Host"
+                sshagent(['jenkins-bobosunne']) {
+                    sh """
+                        ssh -tt -o StrictHostKeyChecking=no bobosunne@10.10.142 << EOF
+                        docker compose up -d
+                        exit
+                        EOF
+                     """
+                }
+            }
+        }
     }
 }
 
