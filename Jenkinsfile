@@ -24,8 +24,8 @@ pipeline {
                     usernameVariable: 'docker_username')]) {
                 sh "docker login -u ${docker_username} -p ${docker_password}"
             }
-                sh "docker tag class-flaskapp-demo sundayfagbauro/class-flaskapp-demo:v1.0"
-                sh "docker push sundayfagbauro/class-flaskapp-demo:v1.0"
+                sh "docker tag class-flaskapp-demo sundayfagbauro/class-flaskapp-demo"
+                sh "docker push sundayfagbauro/class-flaskapp-demo"
             }
         }
 
