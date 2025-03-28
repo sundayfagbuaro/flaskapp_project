@@ -38,7 +38,7 @@ pipeline {
         //    }
         //}
 
-        stage('Deploy to K8s Cluster') {
+        stage('Deploy to MySQL Pod to K8s Cluster') {
             steps{
                 sh 'cd deployment_files/k8s_mysql_deployment_files'
                 withKubeCredentials(kubectlCredentials: [[caCertificate: '', clusterName: 'kubernetes', contextName: '', credentialsId: 'k8s-secret-token', namespace: 'default', serverUrl: 'https://10.10.1.47:6443']]) {
