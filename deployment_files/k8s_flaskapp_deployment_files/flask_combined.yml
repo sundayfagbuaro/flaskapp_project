@@ -39,7 +39,7 @@ metadata:
   name: flaskapp-svc
 spec:
   ports:
-  - port: 3306
+  - port: 5000
   selector:
     app: flask-db
   type: 
