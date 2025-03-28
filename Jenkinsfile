@@ -14,7 +14,7 @@ pipeline {
             steps{
                 sh """
                     docker build -t k8s-test-img .
-                    docker tag test-img sundayfagbuaro/k8s-test-img:v1
+                    docker tag k8s-test-img sundayfagbuaro/k8s-test-img:v1
                 """
             }
         }
@@ -37,7 +37,7 @@ pipeline {
         //        sh "scp -i /var/lib/jenkins/.ssh/id_rsa deployment/k8s_flaskapp_deployment_files/flask_combined.yml bobosunne@10.10.1.34:/home/bobosunne/deployment_files/"
         //    }
         //}
-        
+
         stage('Deploy to K8s Cluster') {
             steps{
                 sh 'cd deployment_files/k8s_mysql_deployment_files'
