@@ -5,7 +5,7 @@ pipeline {
         stage('SCM Checkout') {
             steps {
                 script {
-                    git branch: 'k8_deploy_test', credentialsId: 'git-pat', url: 'https://github.com/sundayfagbuaro/flaskapp_project.git'
+                    git branch: 'k8_deploy_test', credentialsId: 'git_pat', url: 'https://github.com/sundayfagbuaro/flaskapp_project.git'
                 
                 }
             }
@@ -13,8 +13,8 @@ pipeline {
         stage('Build docker image for app'){
             steps{
                 sh """
-                    docker build -t test-img .
-                    docker tag test-img sundayfagbuaro/test-img
+                    docker build -t k8s-test-img .
+                    docker tag test-img sundayfagbuaro/k8s-test-img:v1
                 """
             }
         }
@@ -28,13 +28,24 @@ pipeline {
                 sh 'docker login -u ${docker_user} -p ${docker_pass}'
                 }
 
-                sh 'docker push sundayfagbuaro/test-img'
+                sh 'docker push sundayfagbuaro/k8s-test-img:v1'
             }
         }
-        stage('Copy deployment files to k8s cluster'){
+        //stage('Copy deployment files to k8s cluster'){
+        //    steps{
+        //        sh "scp -i /var/lib/jenkins/.ssh/id_rsa deployment_files/k8s_mysql_deployment_files/secret_storage_configmap.yml, svc_deployment.yml bobosunne@10.10.1.34:/home/bobosunne/deployment_files/"
+        //        sh "scp -i /var/lib/jenkins/.ssh/id_rsa deployment/k8s_flaskapp_deployment_files/flask_combined.yml bobosunne@10.10.1.34:/home/bobosunne/deployment_files/"
+        //    }
+        //}
+        
+        stage('Deploy to K8s Cluster') {
             steps{
-                sh "scp -i /var/lib/jenkins/.ssh/id_rsa deployment_files/k8s_mysql_deployment_files/secret_storage_configmap.yml, svc_deployment.yml bobosunne@10.10.1.34:/home/bobosunne/deployment_files/"
-                sh "scp -i /var/lib/jenkins/.ssh/id_rsa deployment/k8s_flaskapp_deployment_files/flask_combined.yml bobosunne@10.10.1.34:/home/bobosunne/deployment_files/"
+                sh 'cd deployment_files/k8s_mysql_deployment_files'
+                withKubeCredentials(kubectlCredentials: [[caCertificate: '', clusterName: 'kubernetes', contextName: '', credentialsId: 'k8s-secret-token', namespace: 'default', serverUrl: 'https://10.10.1.47:6443']]) {
+                    sh 'kubectl get node'
+                    sh 'kubectl apply -f secret_storage_configmap.yml'
+                    sh 'kubectl apply -f svc_deployment.yml'
+                }
             }
         }
           
