@@ -58,6 +58,7 @@ pipeline {
                     kubectl apply -f secret_storage_configmap.yml
                     kubectl apply -f svc_deployment.yml
                     kubectl get pod,svc
+                    kubectl apply -f ../flaskapp/flask_combined.yml 
                     exit
                     EOF
                     """
