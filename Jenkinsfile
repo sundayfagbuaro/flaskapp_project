@@ -43,8 +43,8 @@ pipeline {
             steps{
                 withKubeCredentials(kubectlCredentials: [[caCertificate: '', clusterName: 'kubernetes', contextName: '', credentialsId: 'k8s-secret-token', namespace: 'default', serverUrl: 'https://10.10.1.47:6443']]) {
                     sh 'cd class_demo_deploy'
-                    sh 'kubectl apply -f secret_storage_configmap.yml'
-                    sh 'kubectl apply -f svc_deployment.yml'
+                    sh 'kubectl apply -f /home/bobosunne/class_demo_deploy/secret_storage_configmap.yml'
+                    sh 'kubectl apply -f /home/bobosunne/class_demo_deploy/svc_deployment.yml'
                     sh 'kubectl get pod,svc'
                 }
             }
