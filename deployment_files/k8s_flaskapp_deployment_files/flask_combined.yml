@@ -15,7 +15,7 @@ spec:
         app: flask-app
     spec:
       containers:
-      - image: sundayfagbuaro/test-img
+      - image: sundayfagbuaro/k8s-test-img:v1
         name: flask-app
         env:
         - name: MYSQL_HOST
