@@ -31,20 +31,36 @@ pipeline {
                 sh 'docker push sundayfagbuaro/k8s-test-img:v1'
             }
         }
-        stage('Copy deployment files to k8s cluster'){
+        stage('Copy deployment files to k8s proxy host'){
             steps{
-                sh "scp -i /var/lib/jenkins/.ssh/id_rsa deployment_files/k8s_mysql_deployment_files/secret_storage_configmap.yml bobosunne@10.10.1.47:/home/bobosunne/class_demo_deploy/"
-                sh "scp -i /var/lib/jenkins/.ssh/id_rsa deployment_files/k8s_mysql_deployment_files/svc_deployment.yml bobosunne@10.10.1.47:/home/bobosunne/class_demo_deploy/"
-                sh "scp -i /var/lib/jenkins/.ssh/id_rsa deployment_files/k8s_flaskapp_deployment_files/flask_combined.yml bobosunne@10.10.1.47:/home/bobosunne/class_demo_deploy/"
+                sh "scp -i /var/lib/jenkins/.ssh/id_rsa deployment_files/k8s_mysql_deployment_files/secret_storage_configmap.yml bobosunne@10.10.1.49:~/deployments/flask_db/"
+                sh "scp -i /var/lib/jenkins/.ssh/id_rsa deployment_files/k8s_mysql_deployment_files/svc_deployment.yml bobosunne@10.10.1.49:~/deployments/flask_db/"
+                sh "scp -i /var/lib/jenkins/.ssh/id_rsa deployment_files/k8s_flaskapp_deployment_files/flask_combined.yml bobosunne@10.10.1.49:~/deployments/flaskapp/"
             }
         }
 
-        stage('Deploy to MySQL Pod to K8s Cluster') {
+        //stage('Deploy to MySQL Pod to K8s Cluster') {
+        //    steps{
+        //        withKubeCredentials(kubectlCredentials: [[caCertificate: '', clusterName: 'kubernetes', contextName: '', credentialsId: 'k8s-secret-token', namespace: 'default', serverUrl: 'https://10.10.1.47:6443']]) {
+        //            sh 'kubectl apply -f /home/bobosunne/class_demo_deploy/secret_storage_configmap.yml'
+        //            sh 'kubectl apply -f /home/bobosunne/class_demo_deploy/svc_deployment.yml'
+        //            sh 'kubectl get pod,svc'
+        //        }
+        //    }
+        //}
+        stage('Deploy To K8s Cluster Via Proxy Host') {
             steps{
-                withKubeCredentials(kubectlCredentials: [[caCertificate: '', clusterName: 'kubernetes', contextName: '', credentialsId: 'k8s-secret-token', namespace: 'default', serverUrl: 'https://10.10.1.47:6443']]) {
-                    sh 'kubectl apply -f /home/bobosunne/class_demo_deploy/secret_storage_configmap.yml'
-                    sh 'kubectl apply -f /home/bobosunne/class_demo_deploy/svc_deployment.yml'
-                    sh 'kubectl get pod,svc'
+                echo "Creationg Pods"
+                sshagent(['docker-lab-user']) {
+                    sh """ 
+                    ssh -tt -o StrictHostKeyChecking=no bobosunne@10.10.1.49 << EOF
+                    cd deployments/flask_db
+                    kubectl apply -f secret_storage_configmap.yml
+                    kubectl apply -f svc_deployment.yml
+                    kubectl get pod,svc
+                    exit
+                    EOF
+                    """
                 }
             }
         }
