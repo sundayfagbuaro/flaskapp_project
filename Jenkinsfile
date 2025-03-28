@@ -33,7 +33,8 @@ pipeline {
         }
         stage('Copy deployment files to k8s cluster'){
             steps{
-                sh "scp -i /var/lib/jenkins/.ssh/id_rsa deployment_files/k8s_mysql_deployment_files/secret_storage_configmap.yml, svc_deployment.yml bobosunne@10.10.1.47:/home/bobosunne/class_demo_deploy/"
+                sh "scp -i /var/lib/jenkins/.ssh/id_rsa deployment_files/k8s_mysql_deployment_files/secret_storage_configmap.yml bobosunne@10.10.1.47:/home/bobosunne/class_demo_deploy/"
+                sh "scp -i /var/lib/jenkins/.ssh/id_rsa deployment_files/k8s_mysql_deployment_files/svc_deployment.yml bobosunne@10.10.1.47:/home/bobosunne/class_demo_deploy/"
                 sh "scp -i /var/lib/jenkins/.ssh/id_rsa deployment_files/k8s_flaskapp_deployment_files/flask_combined.yml bobosunne@10.10.1.47:/home/bobosunne/class_demo_deploy/"
             }
         }
