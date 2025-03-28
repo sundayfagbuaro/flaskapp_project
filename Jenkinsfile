@@ -37,6 +37,9 @@ pipeline {
         //        sh "scp -i /var/lib/jenkins/.ssh/id_rsa deployment/k8s_flaskapp_deployment_files/flask_combined.yml bobosunne@10.10.1.34:/home/bobosunne/deployment_files/"
         //    }
         //}
+        stage('Copy Deployment Files to K8s Cluster') {
+            
+        }
 
         stage('Deploy to MySQL Pod to K8s Cluster') {
             steps{
