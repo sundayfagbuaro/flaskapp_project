@@ -32,15 +32,30 @@ spec:
         ports:
         - containerPort: 5000
           name: flask-app
-#---
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: flaskapp-svc
+spec:
+  ports:
+  - port: 5000
+  selector:
+    app: flask-app
+  type: 
+     NodePort
+
+
 #apiVersion: v1
 #kind: Service
 #metadata:
 #  name: flaskapp-svc
 #spec:
 #  ports:
-#  - port: 5000
+#    port: 5000
+#    protocol: TCP
+#    targetPort: 5000
 #  selector:
-#    app: flask-db
-#  type: 
-#    NodePort
+#    app: flask-app
+#  type: NodePort
+
