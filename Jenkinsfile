@@ -31,23 +31,20 @@ pipeline {
                 sh 'docker push sundayfagbuaro/k8s-test-img:v1'
             }
         }
-        //stage('Copy deployment files to k8s cluster'){
-        //    steps{
-        //        sh "scp -i /var/lib/jenkins/.ssh/id_rsa deployment_files/k8s_mysql_deployment_files/secret_storage_configmap.yml, svc_deployment.yml bobosunne@10.10.1.34:/home/bobosunne/deployment_files/"
-        //        sh "scp -i /var/lib/jenkins/.ssh/id_rsa deployment/k8s_flaskapp_deployment_files/flask_combined.yml bobosunne@10.10.1.34:/home/bobosunne/deployment_files/"
-        //    }
-        //}
-        stage('Copy Deployment Files to K8s Cluster') {
-            
+        stage('Copy deployment files to k8s cluster'){
+            steps{
+                sh "scp -i /var/lib/jenkins/.ssh/id_rsa deployment_files/k8s_mysql_deployment_files/secret_storage_configmap.yml, svc_deployment.yml bobosunne@10.10.1.47:/home/bobosunne/class_demo_deploy/"
+                sh "scp -i /var/lib/jenkins/.ssh/id_rsa deployment_files/k8s_flaskapp_deployment_files/flask_combined.yml bobosunne@10.10.1.47:/home/bobosunne/class_demo_deploy/"
+            }
         }
 
         stage('Deploy to MySQL Pod to K8s Cluster') {
             steps{
-                sh 'cd deployment_files/k8s_mysql_deployment_files'
                 withKubeCredentials(kubectlCredentials: [[caCertificate: '', clusterName: 'kubernetes', contextName: '', credentialsId: 'k8s-secret-token', namespace: 'default', serverUrl: 'https://10.10.1.47:6443']]) {
-                    sh 'kubectl get node'
+                    sh 'cd class_demo_deploy'
                     sh 'kubectl apply -f secret_storage_configmap.yml'
                     sh 'kubectl apply -f svc_deployment.yml'
+                    sh 'kubectl get pod,svc'
                 }
             }
         }
