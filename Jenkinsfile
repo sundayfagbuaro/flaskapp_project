@@ -5,7 +5,7 @@ pipeline {
         stage('SCM Checkout') {
             steps {
                 script {
-                    git branch: 'k8_deploy_test', credentialsId: 'git_pat', url: 'https://github.com/sundayfagbuaro/flaskapp_project.git'
+                    git branch: 'k8_deploy_test', credentialsId: 'git_cred', url: 'https://github.com/sundayfagbuaro/flaskapp_project.git'
                 
                 }
             }
@@ -31,13 +31,25 @@ pipeline {
                 sh 'docker push sundayfagbuaro/k8s-test-img:v1'
             }
         }
-        stage('Copy deployment files to k8s proxy host'){
-            steps{
-                sh "scp -i /var/lib/jenkins/.ssh/id_rsa deployment_files/k8s_mysql_deployment_files/secret_storage_configmap.yml bobosunne@10.10.1.49:~/deployments/flask_db/"
-                sh "scp -i /var/lib/jenkins/.ssh/id_rsa deployment_files/k8s_mysql_deployment_files/svc_deployment.yml bobosunne@10.10.1.49:~/deployments/flask_db/"
-                sh "scp -i /var/lib/jenkins/.ssh/id_rsa deployment_files/k8s_flaskapp_deployment_files/flask_combined.yml bobosunne@10.10.1.49:~/deployments/flaskapp/"
+        stage('Deploy Kubernetes Pod') {
+            steps {
+                withKubeCredentials(kubectlCredentials: [[caCertificate: '', clusterName: 'kubernetes', contextName: '', credentialsId: 'k8s-credentials', namespace: 'default', serverUrl: 'https://192.168.1.94:6443']]) {
+                    sh 'kubectl get node'
+                    script {
+                    // Deploy the pod
+                    sh 'kubectl apply -f deployment_files/k8s_mysql_deployment_files/secret_storage_configmap.yml'
+                }
+                }
+                
             }
         }
+    //    stage('Copy deployment files to k8s proxy host'){
+    //        steps{
+    //            sh "scp -i /var/lib/jenkins/.ssh/id_rsa deployment_files/k8s_mysql_deployment_files/secret_storage_configmap.yml bobosunne@10.10.1.49:~/deployments/flask_db/"
+    //            sh "scp -i /var/lib/jenkins/.ssh/id_rsa deployment_files/k8s_mysql_deployment_files/svc_deployment.yml bobosunne@10.10.1.49:~/deployments/flask_db/"
+    //            sh "scp -i /var/lib/jenkins/.ssh/id_rsa deployment_files/k8s_flaskapp_deployment_files/flask_combined.yml bobosunne@10.10.1.49:~/deployments/flaskapp/"
+    //        }
+    //    }
 
         //stage('Deploy to MySQL Pod to K8s Cluster') {
         //    steps{
@@ -48,23 +60,23 @@ pipeline {
         //        }
         //    }
         //}
-        stage('Deploy To K8s Cluster Via Proxy Host') {
-            steps{
-                echo "Creationg Pods"
-                sshagent(['docker-lab-user']) {
-                    sh """ 
-                    ssh -tt -o StrictHostKeyChecking=no bobosunne@10.10.1.49 << EOF
-                    cd deployments/flask_db
-                    kubectl apply -f secret_storage_configmap.yml
-                    kubectl apply -f svc_deployment.yml
-                    kubectl get pod,svc
-                    kubectl apply -f ../flaskapp/flask_combined.yml 
-                    exit
-                    EOF
-                    """
-                }
-            }
-        }
+    //    stage('Deploy To K8s Cluster Via Proxy Host') {
+    //        steps{
+    //            echo "Creationg Pods"
+    //            sshagent(['docker-lab-user']) {
+    //                sh """ 
+    //                ssh -tt -o StrictHostKeyChecking=no bobosunne@10.10.1.49 << EOF
+    //                cd deployments/flask_db
+    //                kubectl apply -f secret_storage_configmap.yml
+    //                kubectl apply -f svc_deployment.yml
+    //                kubectl get pod,svc
+    //                kubectl apply -f ../flaskapp/flask_combined.yml 
+    //                exit
+    //                EOF
+    //                """
+    //            }
+    //        }
+    //    }
           
     }
    
