@@ -28,6 +28,13 @@ pipeline {
                 sh "docker push sundayfagbuaro/k8s-deploy-demo:v1"
             }
         }
+        stage('Deploy to K8s Cluster') {
+            steps{
+                withKubeCredentials(kubectlCredentials: [[caCertificate: '', clusterName: '', contextName: '', credentialsId: 'k8s-cred', namespace: 'default', serverUrl: 'https://10.10.1.47:6443']]) {
+                    sh 'kubectl get node'
+                }
+            }
+        }
         
     }
 }
