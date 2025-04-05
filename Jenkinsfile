@@ -34,24 +34,7 @@ pipeline {
                 sh "scp -i /var/lib/jenkins/id_rsa db_init.sql bobosunne@10.10.1.42:/home/bobosunne/class_demo_deploy/"
             }
         }
-        stage('Deploy Application to Docker Host') {
-            steps{
-                echo "Dep[loying Containter to Docker Host]"
-                sshagent(['docker-lab-user']) {
-                    sh """
-
-                    ssh -tt -o StrictHostKeyChecking=no bobosunne@10.10.1.42 << EOF
-                    cd class_demo_deploy
-                    docker network create flasknet
-                    docker volume create sqldb_data
-                    docker compose up -d
-                    exit
-                    EOF
-                    """
-                }
-            }
-            
-        }
+        
     }
 }
 
