@@ -33,6 +33,7 @@ pipeline {
                 withKubeCredentials(kubectlCredentials: [[caCertificate: '', clusterName: '', contextName: '', credentialsId: 'k8s-cred', namespace: 'default', serverUrl: 'https://10.10.1.47:6443']]) {
                     sh 'kubectl apply -f deployment_files/secret_storage_configmap.yml'
                     sh 'kubectl apply -f deployment_files/svc_deployment.yml'
+                    sh 'kubectl apply -f deployment_files/flask_combined.yml'
 
                 }
             }
